@@ -3,6 +3,7 @@ from flask import Flask
 from app.config import Config
 from app.database import db
 from flask_migrate import Migrate
+from app.routes import pollution_bp
 
 
 def create_app():
@@ -11,5 +12,7 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
+
+    app.register_blueprint(pollution_bp, url_prefix="/api/pollution")
 
     return app
