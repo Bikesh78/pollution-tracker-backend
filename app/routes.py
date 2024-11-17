@@ -1,9 +1,21 @@
+from datetime import datetime
+from random import randrange, uniform
 from app.models.pollution_data import Pollution_Data
 from flask import Blueprint, abort, jsonify, request
 from app.database import db
 
 
 pollution_bp = Blueprint("pollution_bp", __name__)
+
+
+def get_random_sensor_data():
+    return {
+        "air_quality_index": randrange(0, 300),
+        "date": datetime.now(),
+        "water_quality_index": randrange(0, 100),
+        "ph_level": round(uniform(0, 14), 2),
+        "temperature": round(uniform(10, 100), 2),
+    }
 
 
 @pollution_bp.route("/")
@@ -24,7 +36,6 @@ def get_pollution():
             query = db.select(Pollution_Data)
 
         data = db.session.execute(query).scalars().all()
-        print(dir(data))
         res = []
         for x in data:
             res.append(
@@ -37,6 +48,6 @@ def get_pollution():
                     "date": x.date,
                 }
             )
-        return jsonify({"data": res})
+        return jsonify({"data": res, "live_data": get_random_sensor_data()})
     except Exception as err:
         return jsonify({"error": str(err)})
