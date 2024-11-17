@@ -4,18 +4,10 @@ from app.models.pollution_data import Pollution_Data
 from flask import Blueprint, abort, jsonify, request
 from app.database import db
 
+from app.services import get_random_sensor_data, get_weather_data
+
 
 pollution_bp = Blueprint("pollution_bp", __name__)
-
-
-def get_random_sensor_data():
-    return {
-        "air_quality_index": randrange(0, 300),
-        "date": datetime.now(),
-        "water_quality_index": randrange(0, 100),
-        "ph_level": round(uniform(0, 14), 2),
-        "temperature": round(uniform(10, 100), 2),
-    }
 
 
 @pollution_bp.route("/")
@@ -36,9 +28,9 @@ def get_pollution():
             query = db.select(Pollution_Data)
 
         data = db.session.execute(query).scalars().all()
-        res = []
+        historical_data = []
         for x in data:
-            res.append(
+            historical_data.append(
                 {
                     "id": x.id,
                     "air_quality_index": x.air_quality_index,
@@ -48,6 +40,14 @@ def get_pollution():
                     "date": x.date,
                 }
             )
-        return jsonify({"data": res, "live_data": get_random_sensor_data()})
+        return jsonify(
+            {
+                "data": {
+                    "historical_data": historical_data,
+                    "live_data": get_random_sensor_data(),
+                },
+                "weather": get_weather_data(),
+            }
+        )
     except Exception as err:
         return jsonify({"error": str(err)})

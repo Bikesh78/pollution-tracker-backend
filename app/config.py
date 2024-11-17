@@ -7,4 +7,4 @@ load_dotenv()
 
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    OPEN_WEATHER_API_KEY = os.getenv("OPEN_WEATHER_API_KEY")
