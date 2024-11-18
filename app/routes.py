@@ -35,7 +35,7 @@ def get_pollution():
                     "water_quality_index": x.water_quality_index,
                     "ph_level": x.ph_level,
                     "temperature": x.temperature,
-                    "date": x.date,
+                    "date": x.date.strftime('%Y-%m-%d'),
                 }
             )
         return jsonify(

@@ -20,5 +20,17 @@ def get_weather_data():
     lon = 83.96851
     app_id = Config.OPEN_WEATHER_API_KEY
     url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={app_id}"
-    res = requests.get(url)
-    return res.json()
+    res = requests.get(url).json()
+    weather = {
+        "feels_like": res["main"]["feels_like"],
+        "humidity": res["main"]["humidity"],
+        "temp": res["main"]["temp"],
+        "temp_max": res["main"]["temp_max"],
+        "temp_min": res["main"]["temp_min"],
+        "description": res["weather"][0]["description"],
+        "condition": res["weather"][0]["main"],
+        "wind_deg": res["wind"]["deg"],
+        "wind_speed": res["wind"]["speed"],
+        "visibility":res["visibility"]
+    }
+    return weather

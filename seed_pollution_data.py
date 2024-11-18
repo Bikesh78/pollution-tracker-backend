@@ -17,7 +17,7 @@ def seed_pollution_data():
         for x in range(30):
             new_item = Pollution_Data(
                 air_quality_index=randrange(0, 300),
-                date=today - timedelta(x),
+                date=(today - timedelta(x)).date(),
                 water_quality_index=randrange(0, 100),
                 ph_level=round(uniform(0, 14), 2),
                 temperature=round(uniform(10, 100), 2),
