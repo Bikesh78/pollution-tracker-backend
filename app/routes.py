@@ -1,7 +1,5 @@
-from datetime import datetime
-from random import randrange, uniform
 from app.models.pollution_data import Pollution_Data
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, jsonify, request
 from app.database import db
 
 from app.services import get_random_sensor_data, get_weather_data
@@ -45,8 +43,8 @@ def get_pollution():
                 "data": {
                     "historical_data": historical_data,
                     "live_data": get_random_sensor_data(),
+                    "weather": get_weather_data(),
                 },
-                "weather": get_weather_data(),
             }
         )
     except Exception as err:
