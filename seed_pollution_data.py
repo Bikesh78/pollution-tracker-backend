@@ -14,7 +14,7 @@ app.config.from_object(Config)
 def seed_pollution_data():
     today = datetime.today()
     with app.app_context():
-        for x in range(90):
+        for x in range(30):
             new_item = Pollution_Data(
                 air_quality_index=randrange(0, 300),
                 date=today - timedelta(x),
